@@ -57,8 +57,14 @@ def showAllMastersOfGlyphs( glyphNames, openNewTab=True, avoidDuplicates=True ):
 @objc.python_method
 def glyphNameForIndexOffset( indexOffset ):
 	thisFont = Glyphs.font # frontmost font
-	currentLayer = thisFont.selectedLayers[0]
-	currentGlyph = currentLayer.parent
+	currentGlyph = thisFont.glyphs[0]
+	currentTab = thisFont.currentTab
+	if thisFont.selectedLayers:
+		currentLayer = thisFont.selectedLayers[0]
+		currentGlyph = currentLayer.parent
+	elif currentTab and currentTab.layers and currentTab.layersCursor:
+		currentLayer = currentTab.layers[currentTab.layersCursor-1]
+		currentGlyph = currentLayer.parent
 	glyphIndex = currentGlyph.glyphId()
 
 	# open a new tab with the current glyph if opened from Font tab:
