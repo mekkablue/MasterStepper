@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MasterStepper">
+            <connections>
+                <outlet property="backwardField" destination="ZaT-Em-T0k" id="LGh-kK-369"/>
+                <outlet property="dialog" destination="1" id="Tkv-lP-HY5"/>
+                <outlet property="forwardField" destination="j9E-Gv-uj7" id="rLG-8U-jnN"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="1" customClass="GSPaletteView">
+            <rect key="frame" x="0.0" y="0.0" width="151" height="41"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j9E-Gv-uj7">
+                    <rect key="frame" x="71" y="4" width="78" height="32"/>
+                    <buttonCell key="cell" type="push" title="Next →" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="74g-Ji-p3h">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="stepGlyphs:" target="-2" id="bYU-L6-aPc"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZaT-Em-T0k">
+                    <rect key="frame" x="3" y="4" width="77" height="32"/>
+                    <buttonCell key="cell" type="push" title="← Prev" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d5C-dC-Pcn">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="stepGlyphs:" target="-2" id="EpG-q0-c2l"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="j9E-Gv-uj7" firstAttribute="leading" secondItem="ZaT-Em-T0k" secondAttribute="trailing" constant="5" id="5xc-4T-7lN"/>
+                <constraint firstItem="ZaT-Em-T0k" firstAttribute="baseline" secondItem="j9E-Gv-uj7" secondAttribute="baseline" id="AKZ-jM-B6D"/>
+                <constraint firstItem="ZaT-Em-T0k" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ToC-OP-V9R"/>
+                <constraint firstItem="ZaT-Em-T0k" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="bku-fv-9O8"/>
+            </constraints>
+            <connections>
+                <outlet property="_controller" destination="-2" id="jOT-R9-oyt"/>
+            </connections>
+            <point key="canvasLocation" x="-134.5" y="58.5"/>
+        </customView>
+    </objects>
+</document>
