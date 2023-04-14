@@ -15,6 +15,7 @@ from __future__ import division, print_function, unicode_literals
 import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
+from AppKit import NSEvent, NSNotFound, NSShiftKeyMask
 
 @objc.python_method
 def showAllMastersOfGlyphInCurrentTab( thisGlyphName ):
@@ -55,7 +56,21 @@ def showAllMastersOfGlyphs( glyphNames, openNewTab=True, avoidDuplicates=True ):
 	thisTab.layers = displayLayers
 
 @objc.python_method
-def glyphNameForIndexOffset( indexOffset ):
+def nextGlyphFromFontView(offset=1):
+	thisFont = Glyphs.font
+	if thisFont.selectedLayers:
+		activeGlyph = thisFont.selectedLayers[0].parent
+		controller = thisFont.currentTab.windowController()
+		glyphsInFontView = controller.valueForKey_("glyphsController").arrangedObjects()
+		idx = glyphsInFontView.indexOfObject_(activeGlyph)
+		if idx < NSNotFound and 0 < idx + offset < glyphsInFontView.count():
+			activeGlyph = glyphsInFontView[idx + offset]
+			if activeGlyph:
+				return activeGlyph.name
+	return None
+
+@objc.python_method
+def glyphNameForIndexOffset(indexOffset):
 	thisFont = Glyphs.font # frontmost font
 	currentGlyph = thisFont.glyphs[0]
 	currentTab = thisFont.currentTab
@@ -91,24 +106,25 @@ class MasterStepper (PalettePlugin):
 		# Load .nib dialog (without .extension)
 		self.loadNib('IBdialog', __file__)
 
-	# @objc.python_method
-	# def start(self):
-	# 	# Adding a callback for the 'GSUpdateInterface' event
-	# 	Glyphs.addCallback(self.update, UPDATEINTERFACE)
-	#
-	# @objc.python_method
-	# def __del__(self):
-	# 	Glyphs.removeCallback(self.update)
-
 	@objc.IBAction
 	def stepGlyphs_(self, sender=None):
 		if sender == self.forwardField:
 			move = 1
 		elif sender == self.backwardField:
 			move = -1
-		newGlyphName = glyphNameForIndexOffset(move)
+		
+		newGlyphName = None
+		
+		keysPressed = NSEvent.modifierFlags()
+		shiftKeyPressed = keysPressed & NSShiftKeyMask == shiftKey
+		if shiftKeyPressed:
+			newGlyphName = nextGlyphFromFontView(move)
+		
+		if not newGlyphName:
+			newGlyphName = glyphNameForIndexOffset(move)
+
 		if newGlyphName:
-			showAllMastersOfGlyphInCurrentTab( newGlyphName )
+			showAllMastersOfGlyphInCurrentTab(newGlyphName)
 
 	@objc.python_method
 	def __file__(self):

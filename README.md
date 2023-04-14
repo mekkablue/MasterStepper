@@ -1,6 +1,6 @@
 # MasterStepper
 
-Glyphs.app palette plug-in for stepping through your glyphs, while displaying all masters at once.
+Glyphs.app palette plug-in for stepping through your glyphs, while displaying all masters at once. Hold down Shift for stepping through glyphs currently selected in Font View.
 
 ![MasterStepper](MasterStepper.png)
 
