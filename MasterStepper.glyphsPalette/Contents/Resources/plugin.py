@@ -116,7 +116,7 @@ class MasterStepper (PalettePlugin):
 		newGlyphName = None
 		
 		keysPressed = NSEvent.modifierFlags()
-		shiftKeyPressed = keysPressed & NSShiftKeyMask == shiftKey
+		shiftKeyPressed = keysPressed & NSShiftKeyMask == NSShiftKeyMask
 		if shiftKeyPressed:
 			newGlyphName = nextGlyphFromFontView(move)
 		

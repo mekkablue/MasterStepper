@@ -13,15 +13,15 @@
 	<key>CFBundleName</key>
 	<string>MasterStepper</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string> <!-- 1.0 -->
+	<string>1.0.3</string> <!-- 1.0 -->
 	<key>CFBundleVersion</key>
-	<string>3</string> <!-- 123 -->
+	<string>4</string> <!-- 123 -->
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/mekkablue/MasterStepper/master/MasterStepper.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/mekkablue/MasterStepper</string>
 	<key>productReleaseNotes</key>
-	<string>Hold Shift for previous/next glyph in Font View.</string>
+	<string>Fixed ‘keysPressed’ crash (thx Christine).</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2023</string>
 	<key>NSPrincipalClass</key>
