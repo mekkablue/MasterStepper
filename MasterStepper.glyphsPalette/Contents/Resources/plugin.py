@@ -54,9 +54,10 @@ def showAllMastersOfGlyphInCurrentTab(thisGlyphName, withAccents=False):
 				tabLayers.append(GSControlLayer.newline())
 			tabLayers.pop() # remove last newline
 			thisTab.layers = tabLayers
-		# thisTab.textCursor = 0
+
 		thisTab.textRange = 0
 		if withAccents:
+			thisTab.textCursor = 0
 			thisFont.tool = "SelectTool"
 
 @objc.python_method
