@@ -15,8 +15,20 @@ from __future__ import division, print_function, unicode_literals
 import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
-from AppKit import NSEvent, NSNotFound, NSShiftKeyMask, NSAlternateKeyMask
+from AppKit import NSEvent, NSNotFound, NSShiftKeyMask, NSAlternateKeyMask, NSControlKeyMask
 
+@objc.python_method
+def activateLayer(offset=1):
+	thisFont = Glyphs.font
+	if thisFont:
+		thisTab = thisFont.currentTab
+		if thisTab:
+			thisTab.textCursor = (thisTab.textCursor + offset) % len(thisTab.text)
+			if thisFont.selectedLayers: # avoid newline
+				thisFont.tool = "SelectTool"
+			else:
+				activateLayer(offset=offset)
+	
 @objc.python_method
 def showAllMastersOfGlyphInCurrentTab(thisGlyphName, withAccents=False):
 	thisFont = Glyphs.font
@@ -130,8 +142,12 @@ class MasterStepper (PalettePlugin):
 		newGlyphName = None
 		
 		keysPressed = NSEvent.modifierFlags()
+		ctrlKeyPressed = keysPressed & NSControlKeyMask == NSControlKeyMask
 		shiftKeyPressed = keysPressed & NSShiftKeyMask == NSShiftKeyMask
 		optionKeyPressed = keysPressed & NSAlternateKeyMask == NSAlternateKeyMask
+		
+		if ctrlKeyPressed:
+			activateLayer(offset=move)
 		
 		if shiftKeyPressed:
 			newGlyphName = nextGlyphFromFontView(move)
