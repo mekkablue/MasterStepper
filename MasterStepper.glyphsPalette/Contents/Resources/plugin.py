@@ -15,10 +15,10 @@ from __future__ import division, print_function, unicode_literals
 import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
-from AppKit import NSEvent, NSNotFound, NSShiftKeyMask
+from AppKit import NSEvent, NSNotFound, NSShiftKeyMask, NSAlternateKeyMask
 
 @objc.python_method
-def showAllMastersOfGlyphInCurrentTab( thisGlyphName ):
+def showAllMastersOfGlyphInCurrentTab(thisGlyphName, withAccents=False):
 	thisFont = Glyphs.font
 	thisGlyph = thisFont.glyphs[thisGlyphName]
 	if thisGlyph:
@@ -26,12 +26,26 @@ def showAllMastersOfGlyphInCurrentTab( thisGlyphName ):
 		if not thisTab:
 			thisTab = thisFont.newTab()
 		
-		thisTab.layers = [l for l in thisGlyph.layers if l.isMasterLayer or l.isSpecialLayer]
+		if not withAccents:
+			thisTab.layers = [l for l in thisGlyph.layers if l.isMasterLayer or l.isSpecialLayer]
+		else:
+			tabLayers = []
+			for layer in thisGlyph.layers:
+				if layer.isMasterLayer:
+					mID = layer.associatedMasterId
+					tabLayers.append(layer)
+					compositeGlyphs = thisFont.glyphsContainingComponentWithName_masterId_(thisGlyphName, mID)
+					for compositeGlyph in compositeGlyphs:
+						tabLayers.append(compositeGlyph.layers[mID])
+				elif layer.isSpecialLayer:
+					tabLayers.append(layer)
+				tabLayers.append(GSControlLayer.newline())
+			thisTab.layer = tabLayers
 		# thisTab.textCursor = 0
 		thisTab.textRange = 0
 
 @objc.python_method
-def showAllMastersOfGlyphs( glyphNames, openNewTab=True, avoidDuplicates=True ):
+def showAllMastersOfGlyphs(glyphNames, openNewTab=True, avoidDuplicates=True):
 	if avoidDuplicates:
 		glyphNamesSet = []
 		[glyphNamesSet.append(g) for g in glyphNames if not g in glyphNamesSet]
@@ -117,6 +131,8 @@ class MasterStepper (PalettePlugin):
 		
 		keysPressed = NSEvent.modifierFlags()
 		shiftKeyPressed = keysPressed & NSShiftKeyMask == NSShiftKeyMask
+		optionKeyPressed = keysPressed & NSAlternateKeyMask == NSAlternateKeyMask
+		
 		if shiftKeyPressed:
 			newGlyphName = nextGlyphFromFontView(move)
 		
@@ -124,7 +140,7 @@ class MasterStepper (PalettePlugin):
 			newGlyphName = glyphNameForIndexOffset(move)
 
 		if newGlyphName:
-			showAllMastersOfGlyphInCurrentTab(newGlyphName)
+			showAllMastersOfGlyphInCurrentTab(newGlyphName, withAccents=optionKeyPressed)
 
 	@objc.python_method
 	def __file__(self):
