@@ -56,6 +56,8 @@ def showAllMastersOfGlyphInCurrentTab(thisGlyphName, withAccents=False):
 			thisTab.layers = tabLayers
 		# thisTab.textCursor = 0
 		thisTab.textRange = 0
+		if withAccents:
+			thisFont.tool = "SelectTool"
 
 @objc.python_method
 def showAllMastersOfGlyphs(glyphNames, openNewTab=True, avoidDuplicates=True):
