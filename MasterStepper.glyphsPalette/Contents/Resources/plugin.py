@@ -52,6 +52,7 @@ def showAllMastersOfGlyphInCurrentTab(thisGlyphName, withAccents=False):
 				elif layer.isSpecialLayer:
 					tabLayers.append(layer)
 				tabLayers.append(GSControlLayer.newline())
+			tabLayers.pop() # remove last newline
 			thisTab.layers = tabLayers
 		# thisTab.textCursor = 0
 		thisTab.textRange = 0
