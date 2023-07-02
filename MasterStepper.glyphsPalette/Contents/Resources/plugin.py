@@ -23,7 +23,8 @@ def activateLayer(offset=1, repeated=False):
 	if thisFont:
 		thisTab = thisFont.currentTab
 		if thisTab:
-			thisTab.textCursor = (thisTab.textCursor + offset) % len(thisTab.text)
+			textLength = len([l for l in thisFont.currentTab.layers if type(l)!=GSControlLayer])
+			thisTab.textCursor = (thisTab.textCursor + offset) % textLength
 			if thisFont.selectedLayers: # avoid newline
 				thisFont.tool = "SelectTool"
 			elif not repeated: # avoid endless loop
@@ -90,6 +91,9 @@ def nextGlyphFromFontView(offset=1):
 	thisFont = Glyphs.font
 	if thisFont.selectedLayers:
 		activeGlyph = thisFont.selectedLayers[0].parent
+		currentTab = thisFont.currentTab
+		if not currentTab:
+			currentTab = thisFont.newTab()
 		controller = thisFont.currentTab.windowController()
 		glyphsInFontView = controller.valueForKey_("glyphsController").arrangedObjects()
 		idx = glyphsInFontView.indexOfObject_(activeGlyph)
