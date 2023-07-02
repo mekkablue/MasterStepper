@@ -23,7 +23,7 @@ def activateLayer(offset=1, repeated=False):
 	if thisFont:
 		thisTab = thisFont.currentTab
 		if thisTab:
-			textLength = len([l for l in thisFont.currentTab.layers if type(l)!=GSControlLayer])
+			textLength = len([l for l in thisFont.currentTab.layers])
 			thisTab.textCursor = (thisTab.textCursor + offset) % textLength
 			if thisFont.selectedLayers: # avoid newline
 				thisFont.tool = "SelectTool"
