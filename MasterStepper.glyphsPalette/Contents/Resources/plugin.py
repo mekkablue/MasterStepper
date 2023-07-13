@@ -17,6 +17,16 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 from AppKit import NSEvent, NSNotFound, NSShiftKeyMask, NSAlternateKeyMask, NSControlKeyMask
 
+
+@objc.python_method
+def recalibrateViewPort(tab):
+	# Algorithm by Tim Ahrens
+	vp = tab.viewPort
+	content = tab.bounds
+	if vp.origin.x + vp.size.width < content.origin.x + content.size.width:
+		vp.origin.x = tab.selectedLayerOrigin.x + 0.5 * (layer.width * tab.scale - vp.size.width)
+		tab.viewPort = vp
+
 @objc.python_method
 def activateLayer(offset=1, repeated=False):
 	thisFont = Glyphs.font
@@ -27,6 +37,7 @@ def activateLayer(offset=1, repeated=False):
 			thisTab.textCursor = (thisTab.textCursor + offset) % textLength
 			if thisFont.selectedLayers: # avoid newline
 				thisFont.tool = "SelectTool"
+				recalibrateViewPort(thisTab)
 			elif not repeated: # avoid endless loop
 				activateLayer(offset=offset, repeated=True)
 	
