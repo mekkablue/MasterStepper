@@ -23,8 +23,13 @@ def recalibrateViewPort(tab):
 	# Algorithm by Tim Ahrens
 	vp = tab.viewPort
 	content = tab.bounds
+	layer = tab.activeLayer()
+	if layer:
+		layerWidth = layer.width
+	else:
+		layerWidth = 100
 	if vp.origin.x + vp.size.width < content.origin.x + content.size.width:
-		vp.origin.x = tab.selectedLayerOrigin.x + 0.5 * (layer.width * tab.scale - vp.size.width)
+		vp.origin.x = tab.selectedLayerOrigin.x + 0.5 * (layerWidth * tab.scale - vp.size.width)
 		tab.viewPort = vp
 
 @objc.python_method
